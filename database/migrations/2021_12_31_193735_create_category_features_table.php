@@ -15,7 +15,12 @@ class CreateCategoryFeaturesTable extends Migration
     {
         Schema::create('category_features', function (Blueprint $table) {
             $table->id();
+            $table->string('field_title');
+            $table->tinyInteger('field_type')->comment('1 => text, 2 => color');
+            $table->bigInteger('category_id')->unsigned();
+
             $table->timestamps();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
