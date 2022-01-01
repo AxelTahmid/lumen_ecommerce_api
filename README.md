@@ -22,3 +22,11 @@ If you discover a security vulnerability within Lumen, please send an e-mail to 
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Logs:
+
+server start: php -S localhost:8000 -t public
+composer composer dump-autoload (regen after migration, or add directory in composer)
+composer update (after instaling jwt package)
+
+register provider in bootstrap/app or app/provider/AppServiceProvider to generate "php artisan jwt:secret" : $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
