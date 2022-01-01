@@ -15,7 +15,13 @@ class CreateProductFeaturesTable extends Migration
     {
         Schema::create('product_features', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('product_id')->unsigned();
+            $table->bigInteger('field_id')->unsigned();
+            $table->string('field_value')->nullable();
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('field_id')->references('id')->on('category_features')->onDelete('cascade');
         });
     }
 
