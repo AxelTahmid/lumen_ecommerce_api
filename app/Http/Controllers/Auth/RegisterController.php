@@ -47,7 +47,10 @@ class RegisterController extends Controller
                 'success' => 1,
                 'message' => 'User Registration Succesful!',
                 'access_token' => $token,
-                'user' => $user
+                'token_type' => 'bearer',
+                'user' => $user,
+                'expires_in' => auth()->factory()->getTTL() * 60
+
             ]);
         } catch (\Exception $e) {
             //return error message
