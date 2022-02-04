@@ -21,7 +21,7 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'name', 'email', 'is_super_admin', 'password'
     ];
 
     /**
@@ -32,6 +32,11 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
     protected $hidden = [
         'password',
     ];
+
+    public function getCreateDateAttribute()
+    {
+        return $this->created_at ? date('Y-m-d', strtotime($this->created_at)) : "";
+    }
 
     public function products()
     {
