@@ -17,13 +17,11 @@ class Product extends Model
         'brand_id', 'product_code', 'featured'
     ];
 
-    protected $appends = ["slug", "description_short", "title_short", "is_discount_active", "price_after_discount"];
-
-
+    protected $appends = ["slug", "description_short", "title_short", "is_discount_active", "price_after_discount", "price_after_discount_numeric"];
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id')->with('features');
     }
 
     public function user()
@@ -95,6 +93,15 @@ class Product extends Model
         }
 
         return number_format($this->price, 1);
+    }
+
+    public function getPriceAfterDiscountNumericAttribute()
+    {
+        if ($this->getIsDiscountActiveAttribute()) {
+            return $this->price - ($this->price * ($this->discount / 100));
+        }
+
+        return $this->price;
     }
 
     public function scopeDiscountWithStartAndEndDates($query)
