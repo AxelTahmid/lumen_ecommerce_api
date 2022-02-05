@@ -1,7 +1,5 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router */
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -31,6 +29,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['prefix' => 'brand'], function () use ($router) {
         $router->get('/', 'BrandsController@index');
+        $router->get('/brands-by-category', 'BrandsController@brandsByCategory');
         $router->get('/{id}', 'BrandsController@show');
     });
 
@@ -39,6 +38,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/slider-products', 'ProductsController@sliderProducts');
         $router->get('/latest-products', 'ProductsController@latestProducts');
         $router->get('/featured-products', 'ProductsController@featuredProducts');
+        $router->get('/search-products', 'ProductsController@searchProducts');
         $router->get('/{id}', 'ProductsController@show');
     });
 
@@ -46,7 +46,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/', 'UsersController@index');
         $router->get('/{id}', 'UsersController@show');
     });
-
 
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
         $router->get('/me', 'Auth\\LoginController@userDetails');

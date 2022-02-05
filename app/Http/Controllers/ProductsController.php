@@ -9,12 +9,13 @@ use App\Models\ProductFeature;
 use App\Models\ProductGallery;
 use App\Traits\Helpers;
 use App\Traits\HomeApi;
+use App\Traits\SearchApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
-    use Helpers, HomeApi;
+    use Helpers, HomeApi, SearchApi;
 
     public function __construct()
     {
@@ -293,5 +294,10 @@ class ProductsController extends Controller
     public function featuredProducts()
     {
         return $this->getFeaturedProducts();
+    }
+
+    public function searchProducts(Request $request)
+    {
+        return $this->getProductsForSearch($request->toArray());
     }
 }
