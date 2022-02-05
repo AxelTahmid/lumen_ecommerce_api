@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Helpers;
 
 class Category extends Model
 {
+    use Helpers;
+
     protected $table = "categories";
 
     protected $fillable = [
@@ -41,5 +44,28 @@ class Category extends Model
         } else {
             return $level;
         }
+    }
+
+    public static function getCategoryMenuTree($parent_id = null, &$output = [])
+    {
+        $categories = self::where('parent_id', $parent_id)->get();
+
+        foreach ($categories as $category) {
+
+            $arr = [
+                'id' => $category->id,
+                'title' => $category->title,
+                'path' => ($category->children->count() > 0 ? '#' : '/' . $category->id . '/' . self::slugify($category->title)),
+                'children' => []
+            ];
+
+            if ($category->children->count() > 0) {
+                self::getCategoryMenuTree($category->id, $arr['children']);
+            }
+
+            $output[] = $arr;
+        }
+
+        return $output;
     }
 }

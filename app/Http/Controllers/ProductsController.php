@@ -8,14 +8,13 @@ use App\Models\Product;
 use App\Models\ProductFeature;
 use App\Models\ProductGallery;
 use App\Traits\Helpers;
-// use App\Traits\HomeApi;
+use App\Traits\HomeApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
-    // HomeApi
-    use Helpers;
+    use Helpers, HomeApi;
 
     public function __construct()
     {
@@ -278,5 +277,21 @@ class ProductsController extends Controller
         }
 
         return [];
+    }
+
+
+    public function sliderProducts()
+    {
+        return $this->getSliderProducts();
+    }
+
+    public function latestProducts()
+    {
+        return $this->getLatestProducts();
+    }
+
+    public function featuredProducts()
+    {
+        return $this->getFeaturedProducts();
     }
 }

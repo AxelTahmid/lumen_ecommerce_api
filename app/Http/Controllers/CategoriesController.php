@@ -6,11 +6,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\CategoryFeature;
+use App\Traits\Helpers;
+use App\Traits\HomeApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CategoriesController extends Controller
 {
+    use Helpers, HomeApi;
+
     public function __construct()
     {
         $this->middleware('super_admin_check:store-update-destroy');
@@ -152,5 +156,15 @@ class CategoriesController extends Controller
                 }
             }
         }
+    }
+
+    public function getCategoryMenuHtmlTree(Request $request)
+    {
+        return $this->getCategoryMenuTree();
+    }
+
+    public function featuredCategories(Request $request)
+    {
+        return $this->getFeaturedCategories();
     }
 }

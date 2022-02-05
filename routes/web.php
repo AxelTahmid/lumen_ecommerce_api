@@ -24,6 +24,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'category'], function () use ($router) {
         $router->get('/', 'CategoriesController@index');
         $router->get('/htmltree', 'CategoriesController@getCategoryHtmlTree');
+        $router->get('/menutree', 'CategoriesController@getCategoryMenuHtmlTree');
+        $router->get('/featured-categories', 'CategoriesController@featuredCategories');
         $router->get('/{id}', 'CategoriesController@show');
     });
 
@@ -34,6 +36,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['prefix' => 'product'], function () use ($router) {
         $router->get('/', 'ProductsController@index');
+        $router->get('/slider-products', 'ProductsController@sliderProducts');
+        $router->get('/latest-products', 'ProductsController@latestProducts');
+        $router->get('/featured-products', 'ProductsController@featuredProducts');
         $router->get('/{id}', 'ProductsController@show');
     });
 
