@@ -77,5 +77,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->put('/{id}', 'UsersController@update');
             $router->delete('/{id}', 'UsersController@destroy');
         });
+
+        $router->group(['prefix' => 'cart'], function () use ($router) {
+            $router->get('/', 'ShoppingCartController@index');
+            $router->post('/', 'ShoppingCartController@store');
+            $router->put('/', 'ShoppingCartController@update');
+            $router->get('/{id}', 'ShoppingCartController@show');
+            $router->delete('/clearAll', 'ShoppingCartController@clearAll');
+            $router->delete('/{id}', 'ShoppingCartController@destroy');
+        });
     });
 });
