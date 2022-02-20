@@ -91,4 +91,49 @@ class LoginController extends Controller
 
         return response()->json(['success' => 0]);
     }
+
+    function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $rules = [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $user->id
+        ];
+
+        if ($request->input('password') != "") {
+            $rules['password'] = 'required|min:4|confirmed';
+        }
+
+        $validator = Validator::make($request->only('name', 'email', 'password', 'password_confirmation'), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => 0, 'message' => 'Please fix these errors', 'errors' => $validator->errors()], 500);
+        }
+
+        try {
+
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+
+            if ($request->input('password') != "") {
+                $plainPassword = $request->input('password');
+                $user->password = app('hash')->make($plainPassword);
+            }
+
+            $user->save();
+
+            $token = auth()->tokenById($user->id);
+
+            return response()->json([
+                'success' => 1,
+                'message' => 'User profile updated successfully!',
+                'access_token' => $token,
+                'user' => $user
+            ]);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json(['success' => 0, 'message' => 'User profile update failed!'], 409);
+        }
+    }
 }

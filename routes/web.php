@@ -51,6 +51,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/me', 'Auth\\LoginController@userDetails');
         $router->get('/logout', 'Auth\\LoginController@logout');
         $router->get('/check-login', 'Auth\\LoginController@checkLogin');
+        $router->post('/update-profile', 'Auth\\LoginController@updateProfile');
 
         $router->group(['prefix' => 'category'], function () use ($router) {
             $router->post('/', 'CategoriesController@store');
