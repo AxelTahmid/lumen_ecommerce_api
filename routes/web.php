@@ -86,5 +86,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->delete('/clearAll', 'ShoppingCartController@clearAll');
             $router->delete('/{id}', 'ShoppingCartController@destroy');
         });
+
+        $router->group(['prefix' => 'shippingAddress'], function () use ($router) {
+            $router->get('/', 'ShippingAddressesController@index');
+            $router->post('/', 'ShippingAddressesController@store');
+            $router->get('/{id}', 'ShippingAddressesController@show');
+            $router->put('/{id}', 'ShippingAddressesController@update');
+            $router->delete('/{id}', 'ShippingAddressesController@destroy');
+        });
     });
 });
