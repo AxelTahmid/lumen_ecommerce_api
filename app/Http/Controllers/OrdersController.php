@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 
@@ -20,11 +19,13 @@ class OrdersController extends Controller
 
     public function __construct()
     {
+        $this->middleware('super_admin_check:show-update-getLatestPendingOrders');
     }
 
     public function index(Request $request)
     {
         $orders = $this->retrieveOrders($request);
+
         return response()->json(["orders" => $orders]);
     }
 
@@ -107,14 +108,33 @@ class OrdersController extends Controller
 
     public function show($id)
     {
+        $order = Order::with("orderDetails", "paymentMethod", "shippingAddress", "user")->find($id);
+
+        if (!$order) {
+            return response()->json(['success' => 0, 'message' => 'Not found'], 404);
+        }
+
+        return response()->json(['orderDetails' => $order], 200);
     }
 
     public function update(Request $request, $id)
     {
+        $order = Order::find($id);
+
+        $order->status = $request->input("status");
+
+        $order->save();
+
+        return response()->json(['success' => 1, "message" => "Order updated!", "order" => $order]);
     }
 
     public function getLatestPendingOrders()
     {
+        $topOrders = Order::with("user")->where("status", "pending")->orderBy("created_at", "DESC")->limit(4)->get();
+
+        $countAllPending = Order::with("user")->where("status", "pending")->count();
+
+        return response()->json(["topOrders" => $topOrders, "countAllPending" => $countAllPending]);
     }
 
     private function getOrderTotal($cart)
@@ -146,6 +166,7 @@ class OrdersController extends Controller
             }
         }
     }
+
 
     protected function retrieveOrders($request)
     {
