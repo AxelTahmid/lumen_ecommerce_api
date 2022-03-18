@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-
     protected $table = "orders";
 
     protected $fillable = [
@@ -14,6 +13,7 @@ class Order extends Model
         'total_price', 'paypal_order_identifier', 'paypal_email', 'paypal_given_name',
         'paypal_payer_id',
     ];
+    protected $appends = ["created_at_formatted", "updated_at_formatted"];
 
     public function user()
     {
@@ -32,6 +32,16 @@ class Order extends Model
 
     public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class, 'order_id');
+        return $this->hasMany(OrderDetail::class, 'order_id')->with("product");
+    }
+
+    public function getCreatedAtFormattedAttribute()
+    {
+        return $this->created_at->format('F d, Y h:i');
+    }
+
+    public function getUpdatedAtFormattedAttribute()
+    {
+        return $this->updated_at->format('F d, Y h:i');
     }
 }
