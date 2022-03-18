@@ -94,5 +94,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->put('/{id}', 'ShippingAddressesController@update');
             $router->delete('/{id}', 'ShippingAddressesController@destroy');
         });
+
+        $router->group(['prefix' => 'paymentMethods'], function () use ($router) {
+            $router->get('/', 'PaymentMethodsController@index');
+        });
+
+        $router->group(['prefix' => 'orders'], function () use ($router) {
+            $router->get('/', 'OrdersController@index');
+            $router->post('/', 'OrdersController@store');
+            $router->get('/latest-pending-orders', 'OrdersController@getLatestPendingOrders');
+            $router->get('/{id}', 'OrdersController@show');
+            $router->put('/{id}', 'OrdersController@update');
+        });
     });
 });
